@@ -1,0 +1,31 @@
+<header>
+  <div class="container brand">ReUse Campus</div>
+</header>
+
+<main class="container">
+  <div class="heading">
+    <h1>Publicaciones</h1>
+    <button type="button" (click)="cargar()" [disabled]="cargando()">Actualizar</button>
+  </div>
+
+  @if (cargando()) {
+    <p role="status">Cargando publicaciones…</p>
+  } @else if (error()) {
+    <p class="error" role="alert">No se pudo conectar con el catálogo. Vuelve a intentar.</p>
+  }
+  <div class="catalog">
+    @for (articulo of publicaciones(); track articulo.id) {
+      <article>
+        <span class="status" [class.available]="articulo.estado === 'DISPONIBLE'">{{ articulo.estado }}</span>
+        <h2>{{ articulo.titulo }}</h2>
+        <p class="detail">{{ articulo.categoria }} · {{ articulo.modalidad === 'DONACION' ? 'Donación' : 'Intercambio' }}</p>
+        <p>{{ articulo.descripcion }}</p>
+        <p class="detail">Publicado por {{ articulo.propietario }}</p>
+      </article>
+    } @empty {
+      @if (!cargando() && !error()) {
+        <p>Aún no hay artículos publicados.</p>
+      }
+    }
+  </div>
+</main>
