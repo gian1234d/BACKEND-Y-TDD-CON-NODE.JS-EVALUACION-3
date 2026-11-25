@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { finalize } from 'rxjs';
+import { Session } from "./session";
 
 interface Publicacion {
   id: number;
@@ -14,6 +15,7 @@ interface Publicacion {
 
 @Component({
   selector: 'app-root',
+  imports: [Session],
   templateUrl: './app.html',
 })
 export class App implements OnInit {

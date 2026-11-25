@@ -1,0 +1,28 @@
+<section class="account" aria-labelledby="account-heading">
+  @if (usuario(); as cuenta) {
+    <h2 id="account-heading">Mi cuenta</h2>
+    <p>{{ cuenta.nombre }} · {{ cuenta.rol === 'ADMIN' ? 'Administrador' : 'Usuario' }}</p>
+    <button type="button" (click)="salir()" [disabled]="ocupado()">Cerrar sesión</button>
+  } @else {
+    <h2 id="account-heading">{{ registrando() ? 'Crear cuenta' : 'Iniciar sesión' }}</h2>
+    <form #form="ngForm" (ngSubmit)="enviar()">
+      @if (registrando()) {
+        <label>Nombre <input name="nombre" autocomplete="name" required maxlength="120" [(ngModel)]="nombre"></label>
+      }
+      <label>Correo <input name="correo" type="email" autocomplete="email" required email maxlength="254" [(ngModel)]="correo"></label>
+      <label>Contraseña
+        <input name="password" type="password" required minlength="8" maxlength="128"
+          [attr.autocomplete]="registrando() ? 'new-password' : 'current-password'" [(ngModel)]="password">
+      </label>
+      <div class="account-actions">
+        <button type="submit" [disabled]="form.invalid || ocupado()">{{ registrando() ? 'Registrarme' : 'Entrar' }}</button>
+        <button type="button" class="secondary" (click)="cambiarModo()" [disabled]="ocupado()">
+          {{ registrando() ? 'Volver al acceso' : 'Crear una cuenta' }}
+        </button>
+      </div>
+    </form>
+  }
+  @if (ocupado()) { <p role="status">Procesando…</p> }
+  @if (aviso()) { <p role="status">{{ aviso() }}</p> }
+  @if (error()) { <p class="error" role="alert">{{ error() }}</p> }
+</section>
